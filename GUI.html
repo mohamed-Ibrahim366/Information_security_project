@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>꧁Cybₑᵣ ₛₑₙₗₑₙₛ꧂</title>
+    <link rel="stylesheet" href="Style.css">
+    <script src="./Caesar/encrypt.js"></script>
+    <script src="./Caesar/decrypt.js"></script>
+    <script src="./MonoAlphabetiic/encrypt.js"></script>
+    <script src="./MonoAlphabetiic/decrypt.js"></script>
+    <script src="./PolyAlphabetic/encrypt.js"></script>
+    <script src="./PolyAlphabetic/decrypt.js"></script>
+    <script src="./RailFence/encrypt.js"></script>
+    <script src="./RailFence/decrypt.js"></script>
+    <script src="./Playfair/encrypt.js"></script>
+    <script src="./Playfair/decrypt.js"></script>
+    <script src="./OneTimePad/encrypt.js"></script>
+    <script src="./OneTimePad/decrypt.js"></script>
+</head>
+<body>
+    <div class="wavy-background"></div>
+
+    <!-- Form Container -->
+    <div class="container">
+        <h1>꧁Cybₑᵣ ₛₑₙₗₑₙₛ꧂</h1>
+        <label for="cipher">Choose a Cipher:</label>
+        <select id="cipher">
+            <option value="Caesar">Caesar</option>
+            <option value="Monoalphabetic">Monoalphabetic</option>
+            <option value="Polyalphabetic">Polyalphabetic</option>
+            <option value="RailFence">Rail Fence</option>
+            <option value="Playfair">Playfair</option>
+            <option value="OneTimePad">One-Time Pad</option>
+        </select>
+
+        <label for="operation">Operation:</label>
+        <select id="operation">
+            <option value="encrypt">Encrypt</option>
+            <option value="decrypt">Decrypt</option>
+        </select>
+
+        <label for="text">Text:</label>
+        <input type="text" id="text" placeholder="Enter text here...">
+
+        <label for="key">Key:</label>
+        <input type="text" id="key" placeholder="Enter key here...">
+
+        <button onclick="performOperation()">Submit</button>
+        <button onclick="showInfo()">Show Info</button>
+
+        <h2>Result:</h2>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function performOperation() {
+            const cipher = document.getElementById('cipher').value;
+            const operation = document.getElementById('operation').value;
+            const text = document.getElementById('text').value;
+            const key = document.getElementById('key').value;
+
+            try {
+                let result = "";
+                if (cipher === "Caesar") {
+                    const shift = parseInt(key);
+                    result = operation === "encrypt" ? caesarEncrypt(text, shift) : caesarDecrypt(text, shift);
+                } else if (cipher === "Monoalphabetic") {
+                    result = operation === "encrypt" ? monoalphabeticEncrypt(text, key) : monoalphabeticDecrypt(text, key);
+                } else if (cipher === "Polyalphabetic") {
+                    result = operation === "encrypt" ? polyalphabeticEncrypt(text, key) : polyalphabeticDecrypt(text, key);
+                } else if (cipher === "RailFence") {
+                    const rails = parseInt(key); 
+                    result = operation === "encrypt" ? railFenceCipherEncrypt(text, rails) : railFenceCipherDecrypt(text, rails);
+                } else if (cipher === "Playfair") {
+                    result = operation === "encrypt" ? playfairEncrypt(text, key) : playfairDecrypt(text, key);
+                } else if (cipher === "OneTimePad") {
+                    result = operation === "encrypt" ? oneTimePadEncrypt(text, key) : oneTimePadDecrypt(text, key);
+                }
+                document.getElementById('result').innerText = result;
+            } catch (error) {
+                document.getElementById('result').innerText = `Error: ${error.message}`;
+            }
+        }
+
+        function showInfo() {
+            const cipher = document.getElementById('cipher').value;
+            window.location.href = `cipherInfo.html?cipher=${cipher}`;
+        }
+    </script>
+</body>
+</html>
